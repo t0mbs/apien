@@ -114,8 +114,11 @@ class Api
             $this->_resources[$request] = $values;
         }
 
+        /*
+        Removed requirement to have at least one resource specified
         if (empty($this->_resources))
             self::error(400, "No primary resources have been specified");
+        */
     }
 
     /**
