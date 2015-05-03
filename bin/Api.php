@@ -49,7 +49,7 @@ class Api
     private $_options = array(
         'language' => 'EN',
         'structure' => 'ciy',
-        'gzip' => 'true'
+        'gzip' => 'false'
     );
 
     /**
