@@ -144,7 +144,7 @@ class Database
             throw new Exception("The database version: $version is not a valid float");
         $this->_version = $version;
 
-        $this->query("INSERT INTO `version` VALUES ('database', ?) ON DUPLICATE KEY UPDATE `value`=?");
+        $this->query("INSERT INTO `version` VALUES ('database', $version) ON DUPLICATE KEY UPDATE `value`=$version");
     }
 
     /**
