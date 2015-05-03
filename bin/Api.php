@@ -34,7 +34,8 @@ class Api
     private $_option_validation = array(
         'gzip' => '~^(true|false)$~',
         'language' => '~^[a-z]{2}$~i',
-        'structure' => '~^(ciy|cyi|yci|yic|icy|iyc)$~i'
+        'structure' => '~^(ciy|cyi|yci|yic|icy|iyc|false)$~i',
+        'pretty' => '~^(true|false)$~'
     );
 
     /**
@@ -42,14 +43,16 @@ class Api
      * @var array
      */
     private $_resources = array();
+
     /**
      * Default option values
      * @var array
      */
     private $_options = array(
         'language' => 'EN',
-        'structure' => 'ciy',
-        'gzip' => 'false'
+        'structure' => 'false',
+        'gzip' => 'false',
+        'pretty' => 'false'
     );
 
     /**
@@ -72,7 +75,10 @@ class Api
             $this->_cache->setValue($value);
         }
 
-        self::output($value);
+        if ($this->_options['pretty'] != 'false')
+            self::prettyPrint($value);
+        else
+            self::output($value);
     }
 
     /**
@@ -170,7 +176,11 @@ class Api
         while ($row = $result->fetch_assoc())
             $response[] = $row;
 
-        $response = $this->structureData($response);
+
+        if ($this->_options['structure'] != 'false')
+            $response = $this->structureData($response);
+        else
+            $response = $this->cleanData($response);
 
         if (empty($response))
             self::error(404, "No data was found for the request {$_GET['request']}");
@@ -183,6 +193,7 @@ class Api
     }
 
     /**
+     * Structures data output as a multidimensional array using the hierarchy specified with the structure option
      *
      * @param $results
      * @return array
@@ -205,6 +216,15 @@ class Api
         return $structured_results;
     }
 
+    private function cleanData($results)
+    {
+        $clean_results = array();
+
+        foreach ($results as $result)
+            $clean_results[] = array($result['country_code'], $result['indicator_id'], $result['year'], $result['value']);
+        return $clean_results;
+    }
+
     public static function error($code, $body)
     {
         self::output(self::prepareResponse($code, $body));
@@ -214,6 +234,15 @@ class Api
     {
         header('Content-Type: application/json');
         echo $str;
+        die();
+    }
+
+    private static function prettyPrint($str)
+    {
+        $json = json_decode($str);
+        echo '<pre>';
+        echo json_encode($json, JSON_PRETTY_PRINT);
+        echo '</pre>';
         die();
     }
 
