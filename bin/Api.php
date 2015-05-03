@@ -212,6 +212,7 @@ class Api
 
     private static function output($str)
     {
+        header('Content-Type: application/json');
         echo $str;
         die();
     }
