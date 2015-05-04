@@ -9,28 +9,35 @@
 ## API USE
  Users should query the API using the GET method. The resource selection can be done using single or multiple strings, as follows:
  country_code = 'AFG'
- indicator_id = '97201'
+ indicator_id = '72206'
  year = '1980, 1990, 2013'
 
  The options selection is by default set to:
- gzip = true [false]
- language = en [fr, sp]
- structure = ciy [ciy, yic, yci, iyc, icy]
+ Pretty Print: pretty = true [false]
+ Compression: gzip = false [true]
+ Language: language = en [fr, sp]
+ Data Structure: structure = ciy [ciy, yic, yci, iyc, icy]
+
+ The pretty print option facilitates in-browser exploration of the data, however it is not necessary when downloading the data or connecting an application directly to the API.
 
  The GZIP format speeds up the query and is particularly useful for large queries (i.e. all indicators for all countries). It is set as a default and can be unset by using the following option selection at the end of the query: “gzip=false”.
 
  Gzipped files can be decompressed using any extraction software on Windows (i.e. 7Zip or WinZip) and can be extracted automatically upon download on a Mac or Linux OS. When decompressing online, refer to the language’s decompression functions (i.e. PHP: http://php.net/manual/en/function.gzdecode.php). 
  
  The resources and options above can be selected using the following query format:
- [API HOST]/version/1/country_code/AFG/indicator_id/97201/year/1980/1990/2013?structure=icy
+ * http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/country_code/AFG,JAM/indicator_id/72206,103606/year/1980,1990,2013?structure=icy&pretty=true
+
+ Each query will yield three json arrays: "indicator_value", which consists of the country code, indicator code and value; "country_name", which consists of the country code and the associated country name, and "indicator_name", which consists of the indicator code and the indicator name.
+
+ An empty query (http://ec2-52-1-168-42.compute-1.amazonaws.com) will return all of the data in the HDRO database.
  
 ## SAMPLE QUERIES (The current year of data is for 2013)
- Human Development Index for current year and all countries:[API HOST]/version/1/indicator_id/137506/year/2013
- Human Development Index for current year and all countries:[API HOST]/version/1/indicator_id/137506
- Inequality-adjusted Human Development Index for current year and all countries:[API HOST]/version/1/indicator_id/138806/year/2013
- Gender Inequality Index for current year and all countries: [API HOST]/version/1/indicator_id/68606/year/2013
- Gender Development Index for current year and all countries: [API HOST]/version/1/indicator_id/137906/year/2013
- Multidimensional Povery Index for current year and all countries: [API HOST]/version/1/indicator_id/38406/year/2013
+ * Human Development Index for current year and all countries:http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/137506/year/2013
+ * Human Development Index for all years and all countries:http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/137506
+ * Inequality-adjusted Human Development Index for current year and all countries:http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/138806/year/2013
+ * Gender Inequality Index for current year and all countries: http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/68606/year/2013
+ * Gender Development Index for current year and all countries: http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/137906/year/2013
+ * Multidimensional Povery Index for current year and all countries: http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/38406/year/2013
 
 ## USER SUPPORT
  Issues can be logged directly through GitHub. Anything related to the Human Development Report Office can be sent to hdro.web@undp.org.
