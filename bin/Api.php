@@ -220,8 +220,12 @@ class Api
     {
         $clean_results = array();
 
-        foreach ($results as $result)
-            $clean_results[] = array($result['country_code'], $result['indicator_id'], $result['year'], $result['value']);
+        foreach ($results as $result) {
+            $clean_results['indicator_value'][]= array($result['country_code'], $result['indicator_id'], $result['year'], $result['value']);
+            $clean_results['country_name'][$result['country_code']] = $result['country_name'];
+            $clean_results['indicator_name'][$result['indicator_id']] = $result['indicator_name'];
+        }
+
         return $clean_results;
     }
 
